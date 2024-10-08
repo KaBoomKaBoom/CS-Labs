@@ -1,7 +1,3 @@
-Here’s the refactored report, following a cleaner, more structured format:
-
----
-
 # **Berco Andrei**  
 # **FAF - 221**  
 
