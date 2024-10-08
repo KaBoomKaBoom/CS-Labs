@@ -1,66 +1,74 @@
-def charToIndex(c):
-    return ord(c) - ord('A')
+def remove_spaces(text):
+    return ''.join(text.split())
 
-def indexToChar(i):
-    return chr(i + ord('A'))
+def char_to_index(c):
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    return alphabet.index(c)
 
-def encrypt(text, key):
-    encryptedText = ""
-    for c in text:
-        indexC = charToIndex(c)
-        newIndex = (indexC + key) % 26
-        encryptedText += indexToChar(newIndex)
-    return encryptedText
+def index_to_char(index):
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    return alphabet[index]
 
-def decrypt(text, key):
-    decryptedText = ""
-    for c in text:
-        indexC = charToIndex(c)
-        newIndex = (indexC - key) % 26
-        decryptedText += indexToChar(newIndex)
-    return decryptedText
-
-def checkKey(key):
-    if key < 0 or key > 25:
-        print("Invalid key")
+def check_key(key):
+    if not 0 <= key <= 25:
+        print("Invalid key. Key must be between 0 and 25.")
         return False
     return True
 
-def checkText(text):
-    return all(c.isalpha() for c in text)
+def check_text(text):
+    if not all(c.isalpha() for c in text):
+        print("Invalid text. Text should contain only alphabetic characters.")
+        return False
+    return True
 
-def removeSpaces(text):
-    return ''.join(text.split())
+def encrypt(text, key):
+    encrypted_text = ""
+    text = remove_spaces(text.upper())  # Convert to upper case and remove spaces
 
-def mainTask1():
-    print("Caesar algorithm for the English alphabet")
-    while(True):
-        print("Possible operations: \n1. Encrypt text \n2. Decrypt text")
-        operation = input("Enter operation: ")
-        if(operation == "1"):
-            text = input("Enter text to encrypt: ").upper()
-            text = removeSpaces(text)
-            key = int(input("Enter key: "))
-            if(not checkKey(key)):
-                continue
-            if(not checkText(text)):
-                print("Invalid text")
-                continue
-            if checkKey(key) and checkText(text):
-                print("Encrypted text: ", encrypt(text, key))
-        elif(operation == "2"):
-            text = input("Enter text to decrypt: ").upper()
-            text = removeSpaces(text)
-            key = int(input("Enter key: "))
-            if(not checkKey(key)):
-                print("Invalid key")
-                continue
-            if(not checkText(text)):
-                print("Invalid text")
-                continue
-            if checkKey(key) and checkText(text):
-                print("Decrypted text: ", decrypt(text, key))
+    for c in text:
+        indexC = char_to_index(c)
+        newIndex = (indexC + key) % 26
+        encrypted_text += index_to_char(newIndex)
+        
+    return encrypted_text
 
+def decrypt(text, key):
+    decrypted_text = ""
+    text = remove_spaces(text.upper())  # Convert to upper case and remove spaces
+
+    for c in text:
+        indexC = char_to_index(c)
+        newIndex = (indexC - key) % 26
+        decrypted_text += index_to_char(newIndex)
+        
+    return decrypted_text
+
+def main():
+    print("Caesar Cipher for the English alphabet")
+
+    while True:
+        operation = input("Choose operation (1 - Encrypt, 2 - Decrypt): ").strip()
+        
+        if operation not in ['1', '2']:
+            print("Invalid operation. Please try again.")
+            continue
+
+        text = input("Enter text: ").upper()
+        text = remove_spaces(text)
+        
+        key = int(input("Enter key (between 0 and 25): "))
+
+        if not (check_key(key) and check_text(text)):
+            continue
+
+        if operation == '1':
+            print("Encrypted text: ", encrypt(text, key))
+        else:
+            print("Decrypted text: ", decrypt(text, key))
+
+        cont = input("Do you want to perform another operation? (yes/no): ").lower()
+        if cont != 'yes':
+            break
 
 if __name__ == "__main__":
-    mainTask1()
+    main()
