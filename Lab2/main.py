@@ -1,6 +1,6 @@
 import string
 from collections import Counter
-
+import matplotlib.pyplot as plt
 # Given ciphertext
 ciphertext = """
 Unsfaxdp tgo nwqvip gvkvi ptxo rqvwqvi tgf nc wqv pdapwxwdwxnghxuqvip wqvf ovphixavo rviv
@@ -47,7 +47,6 @@ def preprocess_text(text):
 
 # Function to analyze frequency of letters in the ciphertext
 def frequency_analysis(text):
-    print(Counter(text))
     return Counter(text)
 
 # Function to create substitution mapping based on frequency analysis
@@ -83,6 +82,29 @@ def add_mapping(substitution_mapping, cipher_char, english_char):
     # Add a new mapping for the given cipher character
     substitution_mapping[cipher_char] = english_char
     return substitution_mapping
+
+
+# Function to plot letter frequencies
+def plot_letter_frequencies(counter):
+    letters = sorted(counter.keys())
+    frequencies = [counter[letter] for letter in letters]
+    
+    plt.bar(letters, frequencies, color='blue')
+    plt.xlabel('Letters')
+    plt.ylabel('Frequency')
+    plt.title('Letter Frequency Analysis')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y')
+    plt.tight_layout()
+    plt.show()
+
+# Frequency of letters in the ciphertext for plotting
+cipher_cleaned_text = preprocess_text(ciphertext)
+cipher_letter_count = frequency_analysis(cipher_cleaned_text)
+
+# Plotting the frequency
+plot_letter_frequencies(cipher_letter_count)
+
 # Substitution mapping based on frequency analysis
 substitution_mapping = create_substitution_mapping(ciphertext, english_letter_frequency)
 
