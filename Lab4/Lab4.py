@@ -28,23 +28,14 @@ SHIFT_SCHEDULE = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
 
 def left_shift(bits, shift):
-    """
-    Perform a left circular shift on the given bits.
-    """
     return bits[shift:] + bits[:shift]
 
 
 def apply_permutation(bits, table):
-    """
-    Apply a permutation table to the given bits.
-    """
     return ''.join(bits[i - 1] for i in table)
 
 
 def generate_round_key(k_plus, round_index):
-    """
-    Generate the round key K_i for the given round index.
-    """
     # Step 1: Apply PC1 to the 64-bit key to reduce it to 56 bits
     permuted_key = apply_permutation(k_plus, PC1)
     print(f"Key after PC1 permutation (56 bits): {permuted_key}\n")
@@ -64,6 +55,7 @@ def generate_round_key(k_plus, round_index):
 
     # Step 4: Combine C and D after the final shift
     combined_key = c + d
+    print(f"Combined key after final shift (56 bits): {combined_key}\n")
 
     # Step 5: Apply PC2 to derive the 48-bit round key
     round_key = apply_permutation(combined_key, PC2)
